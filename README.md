@@ -24,8 +24,8 @@ _dmarc.domain.tld IN TXT v=DMARC1; p=reject
 
 Выпуск осуществляется с помощью команды:
 
-```bash
+```
 certbot --server https://acme-v02.api.letsencrypt.org/directory -d domain.tld -d *.domain.tld --manual --preferred-challenges dns-01 certonly
 ```
 
-В качестве подтверждения, будет необходимо использовать [Проверка DNS-01](https://letsencrypt.org/ru/docs/challenge-types/).
+В качестве подтверждения, необходимо использовать [Проверка DNS-01](https://letsencrypt.org/ru/docs/challenge-types/).
