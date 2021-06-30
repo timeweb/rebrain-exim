@@ -176,7 +176,7 @@ certbot --server https://acme-v02.api.letsencrypt.org/directory -d domain.tld -d
 
 НАСТРОЙКА MTA EXIM
 
-`dpkg-reconfigure exim4-config` (На первом шаге указываем internet site, на втором шаге domain.tld, на третьем шаге 0.0.0.0:, на четвертом шаге удаляем всё, дальше нажимае Enter до конца.)
+`dpkg-reconfigure exim4-config` (На первом шаге указываем internet site, на втором шаге domain.tld, на третьем шаге 0.0.0.0:, на четвертом шаге удаляем всё, дальше нажимаем Enter до конца.)
 
 `mkdir /etc/exim4/ssl`
 
