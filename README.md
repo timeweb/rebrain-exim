@@ -1,5 +1,9 @@
 Данный репозиторий содержит конфигурационные файлы Exim, Dovecot, RoundCube, Apache2 и Nginx с помощью которых можно настроить полноценный почтовый стек MTA Exim+MDA Dovecot c RoundCube в качестве веб-интерфейса в Ubuntu 20.04 для domain.tld, где вместо domain.tld необходимо использовать желаемое доменное имя.
 
+Веб-интерфейс будет доступен по адресу:
+
+`https://webmail.domain.tld`
+
 Предварительно для domain.tld должны быть созданы следующие DNS-записи:
 
 ```
@@ -20,7 +24,7 @@ mail._domainkey.domain.tld IN TXT v=DKIM1; h=sha256; k=rsa;
 
 В файле /roundcube/config/config.inc.php необходимо заменить password_database_roundcubemail на пароль от базы данных roundcubemail.
 
-В файле `/etc/dovecot/passwd` необходимо заменить `password_in_md5` на пароль в формате MD5 hash.
+В файле `/etc/dovecot/passwd` необходимо заменить `password_in_md5` на пароль в формате MD5 hash. В этом же файле осуществляется создание почтовых ящиков, по аналогии с текущим ящиком из файла.
 
 
 
