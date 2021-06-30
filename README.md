@@ -31,7 +31,7 @@ mail._domainkey.domain.tld IN TXT v=DKIM1; h=sha256; k=rsa;
 
 Устанавливаем следующие пакеты:
 
-apt install exim4-daemon-heavy dovecot-core dovecot-imapd dovecot-pop3d apache2 php libapache2-mod-php php-mysql php-mbstring php7.4-gettext php-cli php-gd php7.4-opcache php-bcmath php7.4-dom mysql-server -y
+`apt install exim4-daemon-heavy dovecot-core dovecot-imapd dovecot-pop3d apache2 php libapache2-mod-php php-mysql php-mbstring php7.4-gettext php-cli php-gd php7.4-opcache php-bcmath php7.4-dom mysql-server -y`
 
 
 
@@ -39,15 +39,15 @@ apt install exim4-daemon-heavy dovecot-core dovecot-imapd dovecot-pop3d apache2 
 
 НАСТРОЙКА APACHE2
 
-Заменяем конфигурационные файлы /etc/apache2/ports.conf и /etc/apache2/sites-available/webmail.domain.tld.conf
+Заменяем конфигурационные файлы `/etc/apache2/ports.conf` и `/etc/apache2/sites-available/webmail.domain.tld.conf`
 
 Активируем созданный виртуальный хост Apache2 с помощью команды:
 
-a2ensite webmail.domain.tld.conf
+`a2ensite webmail.domain.tld.conf`
 
 Обновляем конфигурацию Apache2:
 
-systemctl reload apache2
+`systemctl reload apache2`
 
 
 
@@ -55,25 +55,24 @@ systemctl reload apache2
 
 УСТАНОВКА И НАСТРОЙКА NGINX
 
-wget https://nginx.org/keys/nginx_signing.key
+`wget https://nginx.org/keys/nginx_signing.key`
 
-apt-key add nginx_signing.key
+`apt-key add nginx_signing.key`
 
-Добавляем в конец файла /etc/apt/sources.list
+Добавляем в конец файла `/etc/apt/sources.list`
 
-deb http://nginx.org/packages/ubuntu/ focal nginx
+`deb http://nginx.org/packages/ubuntu/ focal nginx`
+`deb-src http://nginx.org/packages/ubuntu/ focal nginx`
 
-deb-src http://nginx.org/packages/ubuntu/ focal nginx
+`apt update -y`
 
-apt update -y
+`apt install nginx -y`
 
-apt install nginx -y
+`mkdir /etc/nginx/snippets`
 
-mkdir /etc/nginx/snippets
+Заменяем конфигурационный файл `/etc/nginx/nginx.conf`
 
-Заменяем конфигурационный файл /etc/nginx/nginx.conf
-
-service nginx restart
+`service nginx restart`
 
 Для возможности выпуска SSL-сертификата необходимо установить пакеты `certbot`, `python3-certbot-nginx`.
 
@@ -85,13 +84,13 @@ certbot --server https://acme-v02.api.letsencrypt.org/directory -d domain.tld -d
 
 В качестве подтверждения, необходимо использовать [Проверка DNS-01](https://letsencrypt.org/ru/docs/challenge-types/).
 
-openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+`openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048`
 
-Заменяем конфигурационные файлы /etc/nginx/snippets/ssl-params.conf и /etc/nginx/conf.d/webmail.domain.tld.conf
+Заменяем конфигурационные файлы `/etc/nginx/snippets/ssl-params.conf` и `/etc/nginx/conf.d/webmail.domain.tld.conf`
 
-nginx -t
+`nginx -t`
 
-systemctl reload nginx
+`systemctl reload nginx`
 
 
 
