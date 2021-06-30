@@ -62,6 +62,7 @@ apt-key add nginx_signing.key
 Добавляем в конец файла /etc/apt/sources.list
 
 deb http://nginx.org/packages/ubuntu/ focal nginx
+
 deb-src http://nginx.org/packages/ubuntu/ focal nginx
 
 apt update -y
@@ -123,7 +124,7 @@ mysql -uroot -p
 
 CREATE DATABASE roundcubemail;
 
-CREATE USER 'roundcube'@'localhost' IDENTIFIED BY 'eu4389ewfFEFEA';
+CREATE USER 'roundcube'@'localhost' IDENTIFIED BY 'password_database_roundcubemail';
 
 GRANT ALL ON *.* TO 'roundcube'@'localhost';
 
