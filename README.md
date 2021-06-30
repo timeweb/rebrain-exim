@@ -62,6 +62,7 @@ mail._domainkey.domain.tld IN TXT v=DKIM1; h=sha256; k=rsa;
 Добавляем в конец файла `/etc/apt/sources.list`
 
 `deb http://nginx.org/packages/ubuntu/ focal nginx`
+
 `deb-src http://nginx.org/packages/ubuntu/ focal nginx`
 
 `apt update -y`
@@ -98,38 +99,38 @@ certbot --server https://acme-v02.api.letsencrypt.org/directory -d domain.tld -d
 
 УСТАНОВКА И НАСТРОЙКА ROUNDCUBE 1
 
-mkdir /var/www/roundcube
+`mkdir /var/www/roundcube`
 
-cd /var/www/roundcube
+`cd /var/www/roundcube`
 
-wget https://github.com/roundcube/roundcubemail/releases/download/1.4.11/roundcubemail-1.4.11-complete.tar.gz
+`wget https://github.com/roundcube/roundcubemail/releases/download/1.4.11/roundcubemail-1.4.11-complete.tar.gz`
 
-tar -xzvf roundcubemail-1.4.11-complete.tar.gz
+`tar -xzvf roundcubemail-1.4.11-complete.tar.gz`
 
-rm roundcubemail-1.4.11-complete.tar.gz
+`rm roundcubemail-1.4.11-complete.tar.gz`
 
-mv roundcubemail-1.4.11/* /var/www/roundcube
+`mv roundcubemail-1.4.11/* /var/www/roundcube`
 
-rm -Rf roundcubemail-1.4.11
-
-
+`rm -Rf roundcubemail-1.4.11`
 
 
-НАСТРОЙКА ПАРОЛЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ ROOT ДЛЯ MYSQL И СОЗДАНИЕ БАЗЫ ДАННЫХ И ПОЛЬЗОВАТЕЛЯ ДЛЯ 
 
-mysql_secure_installation 
 
-mysql -uroot -p
+НАСТРОЙКА ПАРОЛЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ ROOT ДЛЯ MYSQL И СОЗДАНИЕ БАЗЫ ДАННЫХ И ПОЛЬЗОВАТЕЛЯ ДЛЯ ROUNDCUBE
 
-CREATE DATABASE roundcubemail;
+`mysql_secure_installation`
 
-CREATE USER 'roundcube'@'localhost' IDENTIFIED BY 'password_database_roundcubemail';
+`mysql -uroot -p`
 
-GRANT ALL ON *.* TO 'roundcube'@'localhost';
+`CREATE DATABASE roundcubemail;`
 
-flush privileges;
+`CREATE USER 'roundcube'@'localhost' IDENTIFIED BY 'password_database_roundcubemail';`
 
-quit;
+`GRANT ALL ON *.* TO 'roundcube'@'localhost';`
+
+`flush privileges;`
+
+`quit;`
 
 
 
@@ -137,90 +138,90 @@ quit;
 
 УСТАНОВКА И НАСТРОЙКА ROUNDCUBE 2
 
-cd /var/www/roundcube/SQL
+`cd /var/www/roundcube/SQL`
 
-mysql -uroundcube -p roundcubemail < mysql.initial.sql
+`mysql -uroundcube -p roundcubemail < mysql.initial.sql`
 
-cp /var/www/roundcube/config/config.inc.php.sample /var/www/roundcube/config/config.inc.php
+`cp /var/www/roundcube/config/config.inc.php.sample /var/www/roundcube/config/config.inc.php`
 
-Заменяем конфигурационный файл /var/www/roundcube/config/config.inc.php
+Заменяем конфигурационный файл `/var/www/roundcube/config/config.inc.php`
 
 
 
 
 НАСТРОЙКА MDA DOVECOT
 
-groupadd -g 150 -r vmail
+`groupadd -g 150 -r vmail`
 
-useradd -g 150 -r -u 150 vmail
+`useradd -g 150 -r -u 150 vmail`
 
-mkdir /home/vmail
+`mkdir /home/vmail`
 
-chown vmail:vmail /home/vmail
+`chown vmail:vmail /home/vmail`
 
-chmod u=rwx,g=rx,o= /home/vmail
+`chmod u=rwx,g=rx,o= /home/vmail`
 
 Заменяем конфигурационные файлы:
 
-/etc/dovecot/conf.d/10-auth.conf
-/etc/dovecot/conf.d/auth-passwdfile.conf.ext
-/etc/dovecot/passwd
-/etc/dovecot/conf.d/10-mail.conf
-/etc/dovecot/conf.d/10-ssl.conf
-/etc/dovecot/conf.d/10-master.conf
-/etc/dovecot/dovecot.conf
-/etc/dovecot/conf.d/auth-system.conf.ext
+`/etc/dovecot/conf.d/10-auth.conf`
+`/etc/dovecot/conf.d/auth-passwdfile.conf.ext`
+`/etc/dovecot/passwd`
+`/etc/dovecot/conf.d/10-mail.conf`
+`/etc/dovecot/conf.d/10-ssl.conf`
+`/etc/dovecot/conf.d/10-master.conf`
+`/etc/dovecot/dovecot.conf`
+`/etc/dovecot/conf.d/auth-system.conf.ext`
 
-service dovecot restart
+`service dovecot restart`
 
 НАСТРОЙКА MTA EXIM
 
-dpkg-reconfigure exim4-config (На первом шаге указываем internet site, на втором шаге domain.tld, на третьем шаге 0.0.0.0:, на четвертом шаге удаляем всё, дальше нажимае Enter до конца.)
+`dpkg-reconfigure exim4-config` (На первом шаге указываем internet site, на втором шаге domain.tld, на третьем шаге 0.0.0.0:, на четвертом шаге удаляем всё, дальше нажимае Enter до конца.)
 
-mkdir /etc/exim4/ssl
+`mkdir /etc/exim4/ssl`
 
-cp /etc/letsencrypt/live/domain.tld/fullchain.pem /etc/exim4/ssl/fullchain.pem
+`cp /etc/letsencrypt/live/domain.tld/fullchain.pem /etc/exim4/ssl/fullchain.pem`
 
-chown root:root /etc/exim4/ssl/fullchain.pem
+`chown root:root /etc/exim4/ssl/fullchain.pem`
 
-chmod 644 /etc/exim4/ssl/fullchain.pem
+`chmod 644 /etc/exim4/ssl/fullchain.pem`
 
-cp /etc/letsencrypt/live/domain.tld/privkey.pem /etc/exim4/ssl/privkey.pem
+`cp /etc/letsencrypt/live/domain.tld/privkey.pem /etc/exim4/ssl/privkey.pem`
 
-chown Debian-exim:Debian-exim /etc/exim4/ssl/privkey.pem
+`chown Debian-exim:Debian-exim /etc/exim4/ssl/privkey.pem`
 
-chmod 644 /etc/exim4/ssl/privkey.pem
+`chmod 644 /etc/exim4/ssl/privkey.pem`
 
-echo "domain.tld" > /etc/exim4/local_domains
+`echo "domain.tld" > /etc/exim4/local_domains`
 
-Заменяем конфигурационный файл /etc/exim4/exim4.conf.template
+Заменяем конфигурационный файл `/etc/exim4/exim4.conf.template`
 
-usermod -aG dovecot Debian-exim
+`usermod -aG dovecot Debian-exim`
 
-chown root:vmail /var/mail/
-
-
+`chown root:vmail /var/mail/`
 
 
 
-УСТАНОВКА И НАСТРОЙКА DKIM
 
-apt install opendkim-tools -y
 
-mkdir /etc/exim4/dkim
+УСТАНОВКА OPENDKIM И НАСТРОЙКА DKIM ДЛЯ DOMAIN.TLD
 
-opendkim-genkey -D /etc/exim4/dkim/ -d domain.tld -s mail --bits=1024
+`apt install opendkim-tools -y`
 
-mv /etc/exim4/dkim/mail.private /etc/exim4/dkim/mail.domain.tld.private
+`mkdir /etc/exim4/dkim`
 
-mv /etc/exim4/dkim/mail.txt /etc/exim4/dkim/mail.domain.tld.public
+`opendkim-genkey -D /etc/exim4/dkim/ -d domain.tld -s mail --bits=1024`
 
-cat /etc/exim4/dkim/mail.domain.tld.public (второе значение в кавычках, котороое начинается как p=* добавляем в TXT запись для mail._domainkey.domain.tld, дополняя текущую TXT-запись)
+`mv /etc/exim4/dkim/mail.private /etc/exim4/dkim/mail.domain.tld.private`
 
-cd /etc/exim4/dkim
+`mv /etc/exim4/dkim/mail.txt /etc/exim4/dkim/mail.domain.tld.public`
 
-chmod u=rw,g=r,o= *
+`cat /etc/exim4/dkim/mail.domain.tld.public` (второе значение в кавычках, котороое начинается как p=* добавляем в TXT запись для mail._domainkey.domain.tld, дополняя текущую TXT-запись)
 
-chown root:Debian-exim *
+`cd /etc/exim4/dkim`
 
-service exim4 reload
+`chmod u=rw,g=r,o= *`
+
+`chown root:Debian-exim *`
+
+`service exim4 reload`
